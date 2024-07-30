@@ -1,7 +1,6 @@
-import { initializeApp } from 'firebase/app';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/messaging';
 
-// web app's Firebase configuration
 const firebaseConfig = {
     apiKey: "AIzaSyCkslB-0zTzitfgubSyOB9F9p6nvR2ezwc",
     authDomain: "flightstatus-4f954.firebaseapp.com",
@@ -12,30 +11,26 @@ const firebaseConfig = {
     measurementId: "G-2F6H9BBDJ5"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+firebase.initializeApp(firebaseConfig);
+const messaging = firebase.messaging();
 
-const messaging = getMessaging(app);
-
-// Function to request notification permission and get the token
-export const requestForToken = () => {
-    return getToken(messaging, { vapidKey: 'BHmy972iLhFaW2Aki7G7uxmXVtYdNCQGWD8hyNsDcuBQfWTpS0wU5NeRQcz30iD1DlUtyfW6zfm9PVMpEWP6yT4' })
-        .then((currentToken) => {
-            if (currentToken) {
-                console.log('Current token for client: ', currentToken);
-            } else {
-                console.log('No registration token available. Request permission to generate one.');
-            }
-        }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
-        });
+export const requestForToken = async () => {
+    try {
+        const token = await messaging.getToken({ vapidKey: 'BHmy972iLhFaW2Aki7G7uxmXVtYdNCQGWD8hyNsDcuBQfWTpS0wU5NeRQcz30iD1DlUtyfW6zfm9PVMpEWP6yT4' });
+        if (token) {
+            console.log('Token:', token);
+        } else {
+            console.log('No registration token available.');
+        }
+    } catch (error) {
+        console.error('Error fetching token:', error);
+    }
 };
 
-// Function to handle incoming messages
-export const onMessageListener = () => {
-    return new Promise((resolve) => {
-        onMessage(messaging, (payload) => {
+export const onMessageListener = () =>
+    new Promise((resolve) => {
+        messaging.onMessage((payload) => {
+            console.log('Message received:', payload);
             resolve(payload);
         });
     });
-};

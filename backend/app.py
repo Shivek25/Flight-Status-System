@@ -19,7 +19,8 @@ def update_flights():
     if response.status_code == 200:
         flights_data = response.json().get('data', [])
         flights_collection.delete_many({})  # Clear previous data
-        flights_collection.insert_many(flights_data)
+        if flights_data:
+            flights_collection.insert_many(flights_data)
         return jsonify({'message': 'Flight data updated successfully'}), 200
     else:
         return jsonify({'error': 'Failed to fetch flight data'}), 500

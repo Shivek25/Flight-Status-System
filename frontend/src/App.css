@@ -1,4 +1,48 @@
 /* App.css */
+.login-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+  color: #fff;
+}
+
+.login-container h2 {
+  margin-bottom: 20px;
+}
+
+.login-container form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-container label {
+  margin-bottom: 5px;
+}
+
+.login-container input {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+}
+
+.login-container button {
+  padding: 10px;
+  background: #2a5298;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background: #1e3c72;
+}
+
+
 body {
   font-family: 'Arial', sans-serif;
   background: linear-gradient(to right, #ff7e5f, #feb47b);
@@ -14,6 +58,12 @@ body {
 
 h1 {
   color: #000000;
+}
+
+.Welcome {
+  color: #1608d2;
+  font-weight: bold;
+
 }
 
 .notification {
@@ -65,3 +115,27 @@ button {
 button:hover {
   background-color: #0056b3;
 }
+
+.flight-status {
+  text-align: center;
+}
+
+.flight-status h1 {
+  margin-bottom: 20px;
+}
+
+.flight-status button {
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  margin-bottom: 20px;
+}
+
+.flight-status button:hover {
+  background-color: #ff2b2b;
+}
+

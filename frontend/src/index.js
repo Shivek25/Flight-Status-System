@@ -1,15 +1,11 @@
-// src/index.js
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import ReactDOM from 'react-dom/client'; // Use `react-dom/client` in React 18
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import './index.css';
 
-ReactDOM.render(
+const root = ReactDOM.createRoot(document.getElementById('root')); // Create a root
+root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
-
-reportWebVitals();

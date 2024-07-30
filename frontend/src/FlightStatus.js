@@ -1,47 +1,45 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const FlightStatus = () => {
-    const [flightStatus, setFlightStatus] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+const FlightStatus = ({ user }) => {
+    const [flights, setFlights] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        // Fetch flight status from backend API
         fetch('/api/flight-status')
             .then(response => response.json())
-            .then(data => {
-                setFlightStatus(data);
-                setLoading(false);
-            })
-            .catch(err => {
-                setError(err.message);
-                setLoading(false);
-            });
+            .then(data => setFlights(data))
+            .catch(error => console.error('Error fetching flight status:', error));
     }, []);
 
-    if (loading) {
-        return <div>Loading...</div>;
-    }
-
-    if (error) {
-        return <div>Error: {error}</div>;
-    }
+    const handleLogout = () => {
+        localStorage.removeItem('user'); 
+        navigate('/'); // Navigate back to login page
+        window.location.reload();
+    };
 
     return (
-        <div>
-            <h1>Flight Status</h1>
-            {flightStatus.error ? (
-                <p>{flightStatus.error}</p>
-            ) : (
-                <>
-                    <p>Status: {flightStatus.status || 'N/A'}</p>
-                    <p>Gate: {flightStatus.gate || 'N/A'}</p>
-                    <p>Departure Airport: {flightStatus.departure_airport || 'N/A'}</p>
-                    <p>Arrival Airport: {flightStatus.arrival_airport || 'N/A'}</p>
-                    <p>Departure Time: {new Date(flightStatus.departure_time).toLocaleString() || 'N/A'}</p>
-                    <p>Arrival Time: {new Date(flightStatus.arrival_time).toLocaleString() || 'N/A'}</p>
-                </>
-            )}
+        <div className="flight-status">
+            <h1>Flight-Status-System</h1>
+            <h2 className='Welcome'>Welcome, {user.name}</h2>
+            <button onClick={handleLogout}>Logout</button>
+            <div className="flights">
+                {flights.length > 0 ? (
+                    flights.map((flight, index) => (
+                        <div key={index} className="flight">
+                            <h2>Flight Status</h2>
+                            <p><strong>Status:</strong> {flight.flight_status}</p>
+                            <p><strong>Gate:</strong> {flight.departure.gate}</p>
+                            <p><strong>Departure Airport:</strong> {flight.departure.airport}</p>
+                            <p><strong>Arrival Airport:</strong> {flight.arrival.airport}</p>
+                            <p><strong>Departure Time:</strong> {flight.departure.scheduled}</p>
+                            <p><strong>Arrival Time:</strong> {flight.arrival.scheduled}</p>
+                        </div>
+                    ))
+                ) : (
+                    <p>No flight data available</p>
+                )}
+            </div>
         </div>
     );
 };
