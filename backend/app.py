@@ -2,15 +2,20 @@ from flask import Flask, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 app = Flask(__name__)
 
-MONGO_URI = 'mongodb://localhost:27017/'
+# MONGO_URI = 'mongodb://localhost:27017/'
+MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['flightstatusdb']
 flights_collection = db['flights']
 
-AVIATIONSTACK_API_KEY = '6dc8e4e9fa1dcabfbb49045c6431d980'
+# AVIATIONSTACK_API_KEY = '6dc8e4e9fa1dcabfbb49045c6431d980'
+AVIATIONSTACK_API_KEY = os.getenv('6dc8e4e9fa1dcabfbb49045c6431d980')
 AVIATIONSTACK_API_URL = f'http://api.aviationstack.com/v1/flights?access_key={AVIATIONSTACK_API_KEY}'
 
 @app.route('/api/update-flights', methods=['GET'])
@@ -33,4 +38,6 @@ def get_flight_status():
     return jsonify(flights), 200
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    port = int(os.environ.get('PORT', 5000))
+    # app.run(debug=True)
+    app.run(host='0.0.0.0', port=port)
