@@ -2,6 +2,7 @@ from flask import Flask, jsonify
 from pymongo import MongoClient
 from bson import ObjectId
 import requests
+import os
 from dotenv import load_dotenv
 
 load_dotenv()
