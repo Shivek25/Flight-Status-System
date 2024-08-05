@@ -4,13 +4,19 @@ from bson import ObjectId
 import requests
 import os
 from dotenv import load_dotenv
+from urllib.parse import quote_plus
+
 
 load_dotenv()
 
 app = Flask(__name__)
 
+username = quote_plus("Shivek")
+password = quote_plus("Feb@20020225")
+MONGO_URI = f'mongodb+srv://{username}:{password}@cluster0.2rhgye3.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
+
 # MONGO_URI = 'mongodb://localhost:27017/'
-MONGO_URI = os.getenv('MONGO_URI')
+# MONGO_URI = os.getenv('MONGO_URI')
 client = MongoClient(MONGO_URI)
 db = client['flightstatusdb']
 flights_collection = db['flights']
@@ -39,6 +45,4 @@ def get_flight_status():
     return jsonify(flights), 200
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))
-    # app.run(debug=True)
-    app.run(host='0.0.0.0', port=port)
+    app.run(debug=True)
