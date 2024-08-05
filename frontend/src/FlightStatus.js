@@ -6,7 +6,7 @@ const FlightStatus = ({ user }) => {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch('/api/flight-status')
+        fetch('https://flight-status-system-9j8a.onrender.com')
             .then(response => response.json())
             .then(data => setFlights(data))
             .catch(error => console.error('Error fetching flight status:', error));
